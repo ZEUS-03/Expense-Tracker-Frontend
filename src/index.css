@@ -1,0 +1,196 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Money-saving and productive expense tracker design system. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 220 13% 18%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 220 13% 18%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 220 13% 18%;
+
+    /* Emerald green primary for financial growth */
+    --primary: 158 64% 25%;
+    --primary-foreground: 0 0% 98%;
+    --primary-glow: 158 64% 35%;
+
+    /* Soft financial secondary */
+    --secondary: 220 13% 96%;
+    --secondary-foreground: 220 13% 18%;
+
+    --muted: 220 13% 96%;
+    --muted-foreground: 220 9% 46%;
+
+    /* Trust blue accent */
+    --accent: 217 91% 95%;
+    --accent-foreground: 217 91% 25%;
+
+    /* Financial warning red */
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+
+    /* Success green for positive actions */
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+
+    /* Gold accent for highlights */
+    --gold: 45 93% 58%;
+    --gold-foreground: 45 93% 18%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 158 64% 25%;
+
+    /* Gradients for financial growth theme */
+    --gradient-primary: linear-gradient(135deg, hsl(158 64% 25%), hsl(158 64% 35%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 46%));
+    --gradient-hero: linear-gradient(135deg, hsl(158 64% 25%), hsl(217 91% 25%));
+    --gradient-card: linear-gradient(145deg, hsl(0 0% 100%), hsl(220 13% 98%));
+    --gradient-background: linear-gradient(135deg, hsl(158 64% 97%), hsl(217 91% 97%));
+    --gradient-accent: linear-gradient(135deg, hsl(45 93% 88%), hsl(158 64% 88%));
+
+    /* Colorful pattern gradients */
+    --pattern-primary: radial-gradient(circle at 20% 20%, hsl(158 64% 25% / 0.1) 0%, transparent 50%), 
+                      radial-gradient(circle at 80% 80%, hsl(217 91% 25% / 0.1) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 70%, hsl(45 93% 58% / 0.05) 0%, transparent 50%);
+    --pattern-secondary: conic-gradient(from 0deg at 50% 50%, hsl(158 64% 95%), hsl(217 91% 95%), hsl(45 93% 95%), hsl(158 64% 95%));
+    --pattern-dots: radial-gradient(circle, hsl(158 64% 25% / 0.1) 1px, transparent 1px);
+
+    /* Shadows for depth */
+    --shadow-soft: 0 2px 8px hsl(220 13% 18% / 0.08);
+    --shadow-medium: 0 4px 16px hsl(220 13% 18% / 0.12);
+    --shadow-strong: 0 8px 32px hsl(220 13% 18% / 0.16);
+    --shadow-glow: 0 0 32px hsl(158 64% 35% / 0.2);
+    --shadow-colorful: 0 8px 32px hsl(158 64% 35% / 0.15), 0 0 0 1px hsl(158 64% 25% / 0.05);
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+
+    --sidebar-foreground: 240 5.3% 26.1%;
+
+    --sidebar-primary: 240 5.9% 10%;
+
+    --sidebar-primary-foreground: 0 0% 98%;
+
+    --sidebar-accent: 240 4.8% 95.9%;
+
+    --sidebar-accent-foreground: 240 5.9% 10%;
+
+    --sidebar-border: 220 13% 91%;
+
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  .dark {
+    --background: 220 13% 9%;
+    --foreground: 0 0% 95%;
+
+    --card: 220 13% 11%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 13% 11%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 158 64% 45%;
+    --primary-foreground: 220 13% 9%;
+    --primary-glow: 158 64% 55%;
+
+    --secondary: 220 13% 15%;
+    --secondary-foreground: 0 0% 95%;
+
+    --muted: 220 13% 15%;
+    --muted-foreground: 220 9% 65%;
+
+    --accent: 217 91% 15%;
+    --accent-foreground: 217 91% 85%;
+
+    --destructive: 0 62% 50%;
+    --destructive-foreground: 0 0% 95%;
+
+    --success: 142 76% 46%;
+    --success-foreground: 220 13% 9%;
+
+    --gold: 45 93% 68%;
+    --gold-foreground: 45 93% 8%;
+
+    --border: 220 13% 20%;
+    --input: 220 13% 20%;
+    --ring: 158 64% 45%;
+
+    --gradient-primary: linear-gradient(135deg, hsl(158 64% 35%), hsl(158 64% 45%));
+    --gradient-success: linear-gradient(135deg, hsl(142 76% 36%), hsl(142 76% 46%));
+    --gradient-hero: linear-gradient(135deg, hsl(158 64% 35%), hsl(217 91% 35%));
+    --gradient-card: linear-gradient(145deg, hsl(220 13% 11%), hsl(220 13% 13%));
+    --gradient-background: linear-gradient(135deg, hsl(220 13% 9%), hsl(217 91% 12%));
+    --gradient-accent: linear-gradient(135deg, hsl(45 93% 25%), hsl(158 64% 25%));
+
+    --pattern-primary: radial-gradient(circle at 20% 20%, hsl(158 64% 45% / 0.15) 0%, transparent 50%), 
+                      radial-gradient(circle at 80% 80%, hsl(217 91% 35% / 0.15) 0%, transparent 50%),
+                      radial-gradient(circle at 40% 70%, hsl(45 93% 68% / 0.08) 0%, transparent 50%);
+    --pattern-secondary: conic-gradient(from 0deg at 50% 50%, hsl(220 13% 15%), hsl(217 91% 15%), hsl(220 13% 18%), hsl(220 13% 15%));
+    --pattern-dots: radial-gradient(circle, hsl(158 64% 45% / 0.15) 1px, transparent 1px);
+
+    --shadow-soft: 0 2px 8px hsl(0 0% 0% / 0.2);
+    --shadow-medium: 0 4px 16px hsl(0 0% 0% / 0.3);
+    --shadow-strong: 0 8px 32px hsl(0 0% 0% / 0.4);
+    --shadow-glow: 0 0 32px hsl(158 64% 45% / 0.3);
+    --shadow-colorful: 0 8px 32px hsl(158 64% 45% / 0.2), 0 0 0 1px hsl(158 64% 45% / 0.1);
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background-image: var(--pattern-primary);
+    background-size: 100px 100px, 150px 150px, 200px 200px;
+    background-attachment: fixed;
+  }
+
+  /* Custom background patterns */
+  .pattern-dots {
+    background-image: var(--pattern-dots);
+    background-size: 20px 20px;
+  }
+
+  .pattern-secondary {
+    background-image: var(--pattern-secondary);
+  }
+
+  /* Mobile-first responsive utilities */
+  .mobile-container {
+    @apply px-4 sm:px-6 lg:px-8;
+  }
+
+  .mobile-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 sm:gap-6;
+  }
+
+  .mobile-text {
+    @apply text-sm sm:text-base;
+  }
+
+  .mobile-heading {
+    @apply text-xl sm:text-2xl lg:text-3xl;
+  }
+}
