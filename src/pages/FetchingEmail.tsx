@@ -1,74 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Mail, Shield, Check, ArrowRight, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
-import { authService } from "@/services/auth";
 import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { googleOAuth } from "@/utils";
+import { syncTransactions } from "@/store/slices/transactionSlice";
 
-const Onboarding = () => {
+const FetchingEmail = () => {
   const [currentStep, setCurrentStep] = useState(0);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [transactionLength, setTransactionLength] = useState({
+    loading: true,
+    error: null,
+    transactions: 0,
+  });
+
+  const dispatch = useAppDispatch();
+  const { transactions, loading, error } = useAppSelector(
+    (state) => state.transactions
+  );
+
+  useEffect(() => {
+    const fetchTransactions = async () => {
+      try {
+        if (!transactions && !loading) {
+          await dispatch(syncTransactions());
+        }
+      } catch (error) {
+        console.error("Error fetching transactions:", error);
+      }
+    };
+
+    fetchTransactions();
+  }, [loading, transactions, dispatch]);
 
   const steps = [
     {
-      title: "Welcome to Smart Expense Tracking",
-      description: "Let's get you set up in just a few simple steps",
-      content: (
-        <div className="space-y-6 text-center">
-          <div className="w-24 h-24 bg-gradient-primary rounded-full flex items-center justify-center mx-auto">
-            <Check className="w-12 h-12 text-primary-foreground" />
-          </div>
-          <p className="text-lg text-muted-foreground">
-            We'll help you connect your email and start tracking expenses
-            automatically
-          </p>
-        </div>
-      ),
-    },
-    {
-      title: "Connect Your Email",
-      description: "We'll scan for transaction confirmations and receipts",
-      content: (
-        <div className="space-y-6">
-          <div className="bg-accent/20 p-6 rounded-lg border border-accent/30">
-            <div className="flex items-start gap-4">
-              <Shield className="w-6 h-6 text-primary mt-1" />
-              <div>
-                <h3 className="font-semibold mb-2">
-                  Your Privacy is Protected
-                </h3>
-                <p className="text-sm text-muted-foreground">
-                  We only read transaction-related emails. Your personal emails
-                  remain completely private.
-                </p>
-              </div>
-            </div>
-          </div>
-
-          <div className="space-y-4">
-            <Button
-              variant="hero"
-              className="w-full"
-              onClick={() => googleOAuth()}
-              disabled={isConnecting}
-            >
-              <Mail className="w-4 h-4 mr-2" />
-              {isConnecting ? "Connecting..." : "Connect Gmail Account"}
-            </Button>
-            {/* <Button variant="outline" className="w-full">
-              <Mail className="w-4 h-4 mr-2" />
-              Connect Outlook Account
-            </Button> */}
-          </div>
-        </div>
-      ),
-    },
-    {
       title: "Email Sync in Progress",
-      description: "We're analyzing your past 3 months of transactions",
+      description:
+        "We're analyzing your past 100 emails to extract transactions",
       content: (
         <div className="space-y-6 text-center">
           <div className="w-24 h-24 bg-gradient-success rounded-full flex items-center justify-center mx-auto animate-pulse">
@@ -77,7 +47,9 @@ const Onboarding = () => {
           <div className="space-y-3">
             <Progress value={75} className="w-full" />
             <p className="text-sm text-muted-foreground">
-              Found 127 transactions • Categorizing expenses...
+              {transactions.length
+                ? `Found ${transactions.length} transactions`
+                : "Fetching transactions • Categorizing expenses..."}
             </p>
           </div>
           <div className="bg-muted/50 p-4 rounded-lg">
@@ -105,22 +77,30 @@ const Onboarding = () => {
             </p>
           </div>
           <div className="bg-accent/20 p-4 rounded-lg">
-            <div className="grid grid-cols-3 gap-4 text-center">
-              <div>
-                <div className="text-2xl font-bold text-primary">127</div>
-                <div className="text-xs text-muted-foreground">
-                  Transactions
+            {transactions.length && (
+              <div className="grid grid-cols-3 gap-4 text-center">
+                <div>
+                  <div className="text-2xl font-bold text-primary">
+                    {transactions.length}
+                  </div>
+                  <div className="text-xs text-muted-foreground">
+                    Transactions
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-success">₹45,340</div>
+                  <div className="text-xs text-muted-foreground">
+                    Total Spent
+                  </div>
+                </div>
+                <div>
+                  <div className="text-2xl font-bold text-gold">8</div>
+                  <div className="text-xs text-muted-foreground">
+                    Categories
+                  </div>
                 </div>
               </div>
-              <div>
-                <div className="text-2xl font-bold text-success">₹45,340</div>
-                <div className="text-xs text-muted-foreground">Total Spent</div>
-              </div>
-              <div>
-                <div className="text-2xl font-bold text-gold">8</div>
-                <div className="text-xs text-muted-foreground">Categories</div>
-              </div>
-            </div>
+            )}
           </div>
         </div>
       ),
@@ -156,15 +136,15 @@ const Onboarding = () => {
           <div className="mb-8">{currentStepData.content}</div>
 
           {/* Navigation */}
-          <div className="flex justify-between">
-            <Button
+          <div className="flex justify-end items-end">
+            {/* <Button
               variant="ghost"
               onClick={() => setCurrentStep(Math.max(0, currentStep - 1))}
               disabled={currentStep === 0}
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Back
-            </Button>
+            </Button> */}
 
             {currentStep === steps.length - 1 ? (
               <Link to="/dashboard">
@@ -179,7 +159,7 @@ const Onboarding = () => {
                 onClick={() =>
                   setCurrentStep(Math.min(steps.length - 1, currentStep + 1))
                 }
-                disabled={currentStep === 1 && !isConnecting}
+                disabled={loading || error !== null}
               >
                 Next
                 <ArrowRight className="w-4 h-4 ml-2" />
@@ -192,4 +172,4 @@ const Onboarding = () => {
   );
 };
 
-export default Onboarding;
+export default FetchingEmail;
