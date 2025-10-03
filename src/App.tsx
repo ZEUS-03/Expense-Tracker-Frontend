@@ -9,52 +9,58 @@ import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import NotFound from "./pages/NotFound";
 import { Provider } from "react-redux";
-import store from "./store/store";
+import { persistor, store } from "./store/store";
 import FetchingEmail from "./pages/FetchingEmail";
 import ProtectedRoute from "./components/ui/ProtectedRoute";
+import { PersistGate } from "redux-persist/integration/react";
+import AuthBootstrap from "./components/AuthBootstrap";
 
 const queryClient = new QueryClient();
 
 const App = () => (
   <Provider store={store}>
-    <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Welcome />} />
-            <Route path="/onboarding" element={<Onboarding />} />
-            <Route
-              path="/email-sync"
-              element={
-                <ProtectedRoute>
-                  <FetchingEmail />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/dashboard"
-              element={
-                <ProtectedRoute>
-                  <Dashboard />
-                </ProtectedRoute>
-              }
-            />
-            <Route
-              path="/transactions"
-              element={
-                <ProtectedRoute>
-                  <Transactions />
-                </ProtectedRoute>
-              }
-            />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
-    </QueryClientProvider>
+    <PersistGate loading={<div>Loading...</div>} persistor={persistor}>
+      <AuthBootstrap>
+        <QueryClientProvider client={queryClient}>
+          <TooltipProvider>
+            <Toaster />
+            <Sonner />
+            <BrowserRouter>
+              <Routes>
+                <Route path="/" element={<Welcome />} />
+                <Route path="/onboarding" element={<Onboarding />} />
+                <Route
+                  path="/email-sync"
+                  element={
+                    <ProtectedRoute>
+                      <FetchingEmail />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/dashboard"
+                  element={
+                    <ProtectedRoute>
+                      <Dashboard />
+                    </ProtectedRoute>
+                  }
+                />
+                <Route
+                  path="/transactions"
+                  element={
+                    <ProtectedRoute>
+                      <Transactions />
+                    </ProtectedRoute>
+                  }
+                />
+                {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+                <Route path="*" element={<NotFound />} />
+              </Routes>
+            </BrowserRouter>
+          </TooltipProvider>
+        </QueryClientProvider>
+      </AuthBootstrap>
+    </PersistGate>
   </Provider>
 );
 

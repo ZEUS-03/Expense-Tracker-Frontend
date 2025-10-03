@@ -22,9 +22,10 @@ export const getSelfCall = createAsyncThunk(
       const response = await authService.getSelfDetails();
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to get auth URL"
-      );
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message,
+      });
     }
   }
 );

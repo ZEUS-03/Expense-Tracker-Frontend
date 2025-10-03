@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Navigate } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/store/hooks";
-import { getSelfCall } from "@/store/slices/authSlice";
+import { useAppSelector } from "@/store/hooks";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -11,29 +10,9 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute = ({
   children,
-  fallback = <div>Loading...</div>,
   redirectPath = "/",
 }: ProtectedRouteProps) => {
-  const dispatch = useAppDispatch();
-  const [initialCheckDone, setInitialCheckDone] = useState(false);
-
-  const { user, isAuthenticated, loading } = useAppSelector(
-    (state) => state.auth
-  );
-
-  useEffect(() => {
-    const checkAuth = async () => {
-      if (!isAuthenticated && !loading) {
-        await dispatch(getSelfCall());
-        setInitialCheckDone(true);
-      }
-    };
-    checkAuth();
-  }, [dispatch, isAuthenticated, loading]);
-
-  if (!initialCheckDone || loading) {
-    return fallback;
-  }
+  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
 
   if (!user || !isAuthenticated) {
     return <Navigate to={redirectPath} replace />;

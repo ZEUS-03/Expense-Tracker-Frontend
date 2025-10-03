@@ -23,12 +23,11 @@ const Welcome = () => {
   );
   useEffect(() => {
     const checkAuth = async () => {
-      if (!isAuthenticated && !loading) {
+      if (!isAuthenticated && !loading && !initialCheckDone) {
         await dispatch(getSelfCall());
       }
       setInitialCheckDone(true);
     };
-
     checkAuth();
   }, []);
 
@@ -85,16 +84,14 @@ const Welcome = () => {
                     <ArrowRight className="group-hover:translate-x-1 transition-transform" />
                   </Button>
                 </Link>
-                <Link to="/login">
-                  <Button
-                    variant="outline"
-                    size="lg"
-                    className="w-full sm:w-auto"
-                    onClick={googleOAuth}
-                  >
-                    Sign In
-                  </Button>
-                </Link>
+                <Button
+                  variant="outline"
+                  size="lg"
+                  className="w-full sm:w-auto"
+                  onClick={googleOAuth}
+                >
+                  Sign In
+                </Button>
               </div>
             </div>
 

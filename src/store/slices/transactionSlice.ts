@@ -23,9 +23,10 @@ export const syncTransactions = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(
-        error.response?.data?.message || "Failed to get transactions"
-      );
+      return rejectWithValue({
+        status: error.response?.status,
+        message: error.response?.data?.message || error.message,
+      });
     }
   }
 );
